@@ -17,9 +17,9 @@ JokesForFun pulls jokes live from the free public [JokeAPI](https://jokeapi.dev)
 
 ![The poster gallery](doc/screenshots/hero.png)
 
-![Two joke posters in the gallery](docs/screenshots/gallery.png)
+![Two joke posters in the gallery](doc/screenshots/gallery.png)
 
-![Three poster treatments](docs/screenshots/posters.png)
+![Three poster treatments](doc/screenshots/posters.png)
 
 ## What & why
 
