@@ -15,7 +15,7 @@
 
 JokesForFun pulls jokes live from the free public [JokeAPI](https://jokeapi.dev) and prints them as risograph-style posters: heavy display type, paper grain, slightly-off rotations. Keep the good ones in a private in-browser collection; share the worst. No account, no backend — everything you save stays in your browser.
 
-![The poster gallery](docs/screenshots/hero.png)
+![The poster gallery](doc/screenshots/hero.png)
 
 ## What & why
 
