@@ -1,0 +1,43 @@
+<!doctype html>
+<!--
+  index.html — the single HTML page Vite serves.
+
+  This is the ENTIRE page shell: Vite injects the bundled JS and CSS into here
+  at build time. Because JokesForFun is a single-page app, there is literally
+  one <div id="root"></div> where React mounts the whole app, and one <script>
+  that points at the entry file src/main.tsx.
+
+  Important details we fixed here (these used to be broken):
+   - We load the three display fonts (Anton, Space Grotesk, JetBrains Mono)
+     from Google Fonts. The CSS in index.css references them by name, so they
+     have to actually be available or the whole poster look falls back to Arial.
+   - We removed a stray <link href="/src/index.css"> that pointed at a path
+     which doesn't exist after building (it broke the production build).
+   - We set a proper <title> and meta description (good for SEO + sharing).-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="JokesForFun — a maximalist riso-print gallery of live internet jokes. Filter by category, keep the good ones, share the worst."
+    />
+    <title>JokesForFun — A Poster Gallery of Terrible Jokes</title>
+
+    <!-- Google Fonts: Anton (the poster display font), Space Grotesk (body), JetBrains Mono (labels/meta). -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- React renders everything inside this empty div. -->
+    <div id="root"></div>
+
+    <!-- The app starts here. Vite resolves /src/main.tsx and bundles it. -->
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

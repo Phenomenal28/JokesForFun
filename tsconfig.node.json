@@ -1,0 +1,35 @@
+﻿// ---------------------------------------------------------------------------
+// tsconfig.node.json — TypeScript config ONLY for vite.config.ts.
+//
+// vite.config.ts runs in Node (not the browser), so it gets a different set
+// of libraries ("node" types) and only itself in `include`. Keeping the app
+// code (tsconfig.json) separate from the build config (this file) is the
+// standard Vite + TypeScript split, and it avoids confusing the DOM types
+// with Node types.
+// ---------------------------------------------------------------------------
+{
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+    "target": "es2023",
+    "lib": ["ES2023"],
+
+    "module": "esnext",
+    "moduleResolution": "bundler",
+
+    // @types/node gives us `path`, `url`, `__dirname`-style helpers used in vite.config.ts.
+    "types": ["node"],
+
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "skipLibCheck": true,
+    "erasableSyntaxOnly": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+
+  // Only this one file is type-checked by this config.
+  "include": ["vite.config.ts"]
+}

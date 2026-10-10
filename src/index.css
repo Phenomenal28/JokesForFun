@@ -1,0 +1,284 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+/*
+ * index.css — the design system for the whole "risograph poster" look.
+ * ---------------------------------------------------------------------------
+ * WHAT THIS IS
+ * This is the place colours, fonts, and custom CSS utilities are defined.
+ * Tailwind v4 reads this file (via the @tailwindcss/vite plugin) and turns
+ * the `@theme` tokens inside it into real utility classes — so writing
+ * `bg-acid` in a component works because of `--color-acid` down below.
+ *
+ * WHY source(none) + @source "../src"
+ * `source(none)` stops Tailwind scanning automatically; `@source "../src"`
+ * tells it to scan our `src/` folder for the classes we actually use. That
+ * keeps the final CSS small (only used classes are included).
+ *
+ * `tw-animate-css` is a small library of enter/exit animations we use for
+ * the Sheet (the filter pop-up).
+ */
+
+/* Dark mode is marker-driven (the .dark class on <html>), not media-driven. */
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * RISO GALLERY — design system for a maximalist joke gallery.
+ * Visual language: risograph poster print, editorial grid, paper + ink,
+ * four art-directed accents, hard offset shadows, zero soft glassmorphism.
+ * All colors are oklch tokens. Never hardcode colors in components.
+ */
+
+/*
+ * @theme inline — design tokens Tailwind turns into classes.
+ * Each `--color-foo` here becomes usable as `bg-foo`, `text-foo`, `border-foo`, etc.
+ * The values point at the colour variables defined further down in :root/.dark,
+ * so when the theme changes, all colours update together.
+ *
+ * The "riso" identity comes from: paper + ink as the base, plus four sharp
+ * "art-directed" accents — acid (green), flame (orange), cobalt (blue), shock (pink).
+ */
+@theme inline {
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-secondary: var(--surface-secondary);
+  --color-ink: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-acid: var(--accent-acid);
+  --color-acid-foreground: var(--accent-acid-foreground);
+  --color-flame: var(--accent-flame);
+  --color-flame-foreground: var(--accent-flame-foreground);
+  --color-cobalt: var(--accent-cobalt);
+  --color-cobalt-foreground: var(--accent-cobalt-foreground);
+  --color-shock: var(--accent-shock);
+  --color-shock-foreground: var(--accent-shock-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+
+  /* Typography — these font names are loaded in index.html from Google Fonts. */
+  --font-display: "Anton", "Arial Black", sans-serif;
+  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* The "riso print" offset shadows: hard, no blur. This is what makes
+     cards/buttons look like they were inked onto paper. */
+  --shadow-block: 6px 6px 0 0 var(--foreground);
+  --shadow-block-sm: 3px 3px 0 0 var(--foreground);
+  --shadow-block-lg: 12px 12px 0 0 var(--foreground);
+}
+
+/* :root — the LIGHT theme. All colours are oklch (a modern colour space):
+   oklch(L C H) = lightness, chroma (saturation), hue. It fades more gently
+   than HSL, which matters for this paper/print aesthetic. */
+:root {
+  --radius: 4px;
+
+  /* paper + ink */
+  --background: oklch(0.958 0.017 88);
+  --foreground: oklch(0.19 0.02 60);
+  --surface: oklch(0.985 0.012 90);
+  --surface-secondary: oklch(0.915 0.024 85);
+
+  --card: oklch(0.985 0.012 90);
+  --card-foreground: oklch(0.19 0.02 60);
+  --popover: oklch(0.985 0.012 90);
+  --popover-foreground: oklch(0.19 0.02 60);
+
+  --primary: oklch(0.19 0.02 60);
+  --primary-foreground: oklch(0.968 0.02 90);
+  --secondary: oklch(0.915 0.024 85);
+  --secondary-foreground: oklch(0.19 0.02 60);
+
+  --muted: oklch(0.915 0.024 85);
+  --muted-foreground: oklch(0.44 0.02 65);
+
+  --accent: oklch(0.87 0.21 122);
+  --accent-foreground: oklch(0.19 0.02 60);
+
+  /* four art-directed accents */
+  --accent-acid: oklch(0.87 0.21 122);
+  --accent-acid-foreground: oklch(0.19 0.02 60);
+  --accent-flame: oklch(0.71 0.2 45);
+  --accent-flame-foreground: oklch(0.19 0.02 60);
+  --accent-cobalt: oklch(0.48 0.2 262);
+  --accent-cobalt-foreground: oklch(0.975 0.015 90);
+  --accent-shock: oklch(0.68 0.25 350);
+  --accent-shock-foreground: oklch(0.975 0.015 90);
+
+  --destructive: oklch(0.55 0.23 27);
+  --destructive-foreground: oklch(0.975 0.015 90);
+  --success: oklch(0.6 0.15 150);
+  --warning: oklch(0.78 0.16 80);
+
+  --border: oklch(0.19 0.02 60);
+  --input: oklch(0.19 0.02 60);
+  --ring: oklch(0.68 0.25 350);
+}
+
+/* .dark — the DARK theme overrides. Override the same variable names and
+   the whole UI flips, because every component uses these tokens. */
+.dark {
+  --background: oklch(0.17 0.015 60);
+  --foreground: oklch(0.965 0.015 90);
+  --surface: oklch(0.23 0.018 60);
+  --surface-secondary: oklch(0.29 0.02 60);
+  --card: oklch(0.23 0.018 60);
+  --card-foreground: oklch(0.965 0.015 90);
+  --popover: oklch(0.23 0.018 60);
+  --popover-foreground: oklch(0.965 0.015 90);
+  --primary: oklch(0.965 0.015 90);
+  --primary-foreground: oklch(0.17 0.015 60);
+  --secondary: oklch(0.29 0.02 60);
+  --secondary-foreground: oklch(0.965 0.015 90);
+  --muted: oklch(0.29 0.02 60);
+  --muted-foreground: oklch(0.72 0.02 80);
+  --border: oklch(0.965 0.015 90);
+  --input: oklch(0.965 0.015 90);
+}
+
+/* @layer base — global element styling applied to every page.
+   Kept intentionally small: just the paper background, body font, the display
+   look for headings, and sensible focus / selection states. */
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+
+  ::selection {
+    background: var(--accent-shock);
+    color: var(--accent-shock-foreground);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--accent-shock);
+    outline-offset: 2px;
+  }
+}
+
+/* ── Utilities ─────────────────────────────────────────────── */
+
+/* ── Utilities ───────────────────────────────────────────────
+   These are our custom CSS classes, written once here so components can use
+   them like normal Tailwind utilities (`className="press print-block"`).
+   Keeping the design language here means a button looks the same everywhere.
+ */
+
+/* Big, bold poster headline text. Used on every page hero. */
+@utility display {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: -0.025em;
+  line-height: 0.86;
+}
+
+/* The small uppercase monospace label used on chips, buttons, captions. */
+@utility meta {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.6875rem;
+}
+
+/* hard riso-print offset border */
+/* hard riso-print offset border — the larger version, used on big cards/panels */
+@utility print-block {
+  border: 2px solid var(--foreground);
+  box-shadow: var(--shadow-block);
+}
+
+/* smaller offset shadow for buttons/chips */
+@utility print-block-sm {
+  border: 2px solid var(--foreground);
+  box-shadow: var(--shadow-block-sm);
+}
+
+/* The press-and-release feel for clickable things — on hover it lifts slightly
+   and the shadow grows; on click it "prints" down into place. */
+@utility press {
+  transition:
+    transform 120ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 120ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    background-color 120ms ease;
+  &:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-block);
+  }
+  &:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0 0 0 0 var(--foreground);
+  }
+}
+
+/* paper grain, purely decorative */
+/* paper grain, purely decorative — the texture laid over the whole viewport
+   by the <GrainOverlay/> component. */
+@utility grain-layer {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+}
+
+/* a soft dot pattern used on some decorative background shapes */
+@utility halftone {
+  background-image: radial-gradient(var(--foreground) 1.2px, transparent 1.3px);
+  background-size: 8px 8px;
+}
+
+@utility rule-thick {  border-top: 3px solid var(--foreground);
+}
+
+/* When the user has asked their OS for less motion, honour it everywhere:
+   nearly freeze all animations and transitions. This is a basic accessibility
+   requirement, and the animations file (anime.js) checks `prefers-reduced-motion`
+   too so it can skip motion entirely. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

@@ -1,0 +1,61 @@
+﻿// ---------------------------------------------------------------------------
+// tsconfig.json — the single TypeScript config for the whole app source.
+//
+// Backstory: we used to use the "project references" pattern (a root tsconfig
+// that referenced tsconfig.app.json + tsconfig.node.json). Under TypeScript 6
+// that produced hundreds of "TS6305 output file not built" errors, so we
+// simplified to this one file owning all of `src/`. tsconfig.node.json (the
+// other file) only covers vite.config.ts.
+//
+// Build script in package.json: `tsc --noEmit && vite build`.
+// `tsc --noEmit` means: type-check everything in `src/`, but do NOT emit JS —
+// Vite does the bundling. TypeScript is purely a type-checker here.
+// ---------------------------------------------------------------------------
+{
+  "compilerOptions": {
+    // Where to cache incremental build info (speeds up re-checks).
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.tsbuildinfo",
+
+    // Compile to modern JS. ES2023 gives us things like array `.findLast()`.
+    "target": "es2023",
+    // The built-in libraries we can assume exist: ES2023 + browser DOM APIs.
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+
+    // "esnext" + "bundler" is the modern pair recommended for Vite projects.
+    "module": "esnext",
+    "moduleResolution": "bundler",
+
+    // Lets us write `import { X } from "./foo.ts"` WITH the .ts extension.
+    "allowImportingTsExtensions": true,
+    // Pull in the special types that make Vite features work (e.g. import.meta).
+    "types": ["vite/client"],
+
+    // React 19 uses the automatic JSX runtime, so we never `import React`.
+    "jsx": "react-jsx",
+
+    // Every type-only import must use `import type` (or inline `type`).
+    // Keeps bundles small and avoids shipping types as real code.
+    "verbatimModuleSyntax": true,
+    // A file counts as a module if it has any import/export at all.
+    "moduleDetection": "force",
+    "noEmit": true,            // see header — Vite emits, TypeScript only checks.
+    "skipLibCheck": true,     // don't type-check the .d.ts files inside node_modules (faster).
+
+    // Lets us import .tsx files without writing the extension, and treats them as JS.
+    "allowArbitraryExtensions": true,
+    // TS 5.8+ rule: bans constructor parameter properties (keeps types "erasable").
+    "erasableSyntaxOnly": true,
+    "noUnusedLocals": true,          // a declared-but-unused variable is a build error.
+    "noUnusedParameters": true,      // same idea, for unused function parameters.
+    "noFallthroughCasesInSwitch": true,
+
+    // The famous `@/` alias maps to `src/`. Used everywhere, e.g.
+    //   import { cn } from "@/lib/utils"
+    // We intentionally do NOT set `baseUrl` (it's deprecated in TS 6); without
+    // it, `paths` resolves relative to this file's location, which is what we want.
+    "paths": { "@/*": ["./src/*"] }
+  },
+
+  // Only compile the app source. vite.config.ts is handled by tsconfig.node.json.
+  "include": ["src"]
+}
