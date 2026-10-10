@@ -17,6 +17,10 @@ JokesForFun pulls jokes live from the free public [JokeAPI](https://jokeapi.dev)
 
 ![The poster gallery](doc/screenshots/hero.png)
 
+![Two joke posters in the gallery](docs/screenshots/gallery.png)
+
+![Three poster treatments](docs/screenshots/posters.png)
+
 ## What & why
 
 **What:** a single-page app where every visit is a fresh gallery of jokes you can filter, favourite, and share.
